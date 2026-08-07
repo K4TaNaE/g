@@ -97,7 +97,6 @@ _G.Config = {
         WriteConsoleLogs = false, -- debug
         WriteFileLogs = false, -- debug
     },
-}
 if not game:IsLoaded() then
   game.Loaded:Wait()
 end
@@ -208,7 +207,6 @@ local _script = coroutine.create(function()
     ["mystery"] = "❓ Task [mystery] detected for:",
     ["pizza_party"] = "🍕 Task [pizza-party] detected for:",
     ["pet_me"] = "🐾 Task [pet-me] detected for:",
-    ["balloon_fight"] = "🎈 Task [balloon-fight] detected for:",
   }
   local formatted_baby = {
     ["camping"] = "🏕️ Task [camping] detected for baby!",
@@ -230,58 +228,14 @@ local _script = coroutine.create(function()
     [4] = "uncommon",
     [5] = "common",
   }
-  _G.ConfigFilter = {
-    ["SpecificGiftFilter"] = {
-      ["chests"] = true,
-      ["massivegift"] = true,
-      ["biggift"] = true,
-      ["smallgift"] = true,
-    },
-    ["RaritiesFilter"] = {
-      ["common"] = "common",
-      ["uncommon"] = "uncommon",
-      ["rare"] = "rare",
-      ["ultra-rare"] = "ultra_rare",
-      ["legendary"] = "legendary",
-    },
-    ["AgesFilter"] = {
-      ["newborn"] = 1,
-      ["junior"] = 2,
-      ["pre-teen"] = 3,
-      ["teen"] = 4,
-      ["post-teen"] = 5,
-      ["fullgrown"] = 6,
-    },
-    ["PropertiesFilter"] = {
-      ["neon"] = "neon",
-      ["meganeon"] = "meganeon",
-      ["flyable"] = "flyable",
-      ["rideable"] = "rideable",      
-    }
-  }
-
   local parts = {
     ["main"] = {0,100,0},
     ["_camp"] = {-25, 30, -1054},
     ["_playground"] = {-387, 31, -1750},
     ["_beach"] = {-670, 37, -1413},
-    ["_event_balloon_fight"] = {-61, 37, -1406},
   }  
   local furn = { bed = { ["id"]="basicbed", ["usepart"]="Seat1", }, bath = { ["id"]="cheap_pet_bathtub", ["usepart"]="UseBlock", }, toilet = { ["id"]="ailments_refresh_2024_litter_box", ["usepart"]="UseBlock", }, lurebox = { ["id"]="lures_2023_normal_lure", ["usepart"]="UseBlock", }, } 
-  _G.InternalConfig = { 
-    PetFarmDLib = {}, 
-    GiftAutoOpenDLib = {}, 
-    AutoBuyDLib = { EggAutoBuyDLib = {}, GiftAutoBuyDLib = {}, }, 
-    AutoNeonDLib = {}, 
-    AutoMegaNeonDLib = {}, 
-    TradeDLib = { Blacklist = {}, },
-    WebhookDLib = { DiscordDLib = {}, TelegramDLib = {}, },
-    PetRecyclerDLib = { Blacklist = {}, },
-    AutoGivePotionDLib = { Blacklist = {}, }, 
-    PetPenDLib = { Blacklist = {}, }, 
-    OptimizationDLib ={}, 
-    UtilitiesDLib = {}, 
-  } 
+
   _G.HeadCashed = nil
   local RunService = game:GetService("RunService")
   local NetworkClient = game:GetService("NetworkClient")
@@ -1117,6 +1071,7 @@ local _script = coroutine.create(function()
   end
   
   ;(function()
+    print("there where i must be")
     SafeFire("SettingsAPI/SetSetting", "tutorial_completed", true)
     SafeFire("SettingsAPI/SetSetting", "pet_radial_menu", true)
     SafeFire("SettingsAPI/SetSetting", "use_ailments_monitor", true)
@@ -1150,6 +1105,7 @@ local _script = coroutine.create(function()
     LocalPlayer.Character.Humanoid and 
     LocalPlayer.PlayerGui
     task.wait(1)
+    print("end of where i must be")
   end)()
   
   ;(function() 
@@ -1157,7 +1113,6 @@ local _script = coroutine.create(function()
     InitPart("_camp", parts["_camp"])
     InitPart("_playground", parts["_playground"])
     InitPart("_beach", parts["_beach"])
-    InitPart("_event_balloon_fight", parts["_event_balloon_fight"])
   end)()
   
   setfpscap(_G.InternalConfig.OptimizationDLib.FPSCap)
@@ -1839,33 +1794,6 @@ local _script = coroutine.create(function()
       WriteFileLog(string.format("Task pet-me for %s - Done", actual_pet.remote), "DEBUG")
       Enstat(age, friendship, money, "pet_me")  
     end,
-    ["balloon_fight"] = function()
-      local pet = ClientData.get("pet_char_wrappers")[1]
-      local cdata = ClientData.get("inventory").pets[actual_pet.unique]
-      local friendship = cdata.properties.friendship_level
-      local money = ClientData.get("money")
-      local age = pet.pet_progression.age
-      local _task = LocationQueue.Enqueue(function()
-        EmulateLocation("MainMap", LocalPlayer, "Default")
-        Gotopart("_event_balloon_fight")
-        local deadline = os.clock() + 60
-        repeat 
-          task.wait(1)
-        until not HasAilment("balloon_fight") or os.clock() > deadline
-        Gotopart("main")
-        if os.clock() > deadline then 
-          WriteConsoleLog(string.format("Task balloon-fight for %s - Out of limits", actual_pet.remote), string.format("🟥 Task balloon-fight for %s - Out of limits!", actual_pet.remote), "DEBUG")
-          WriteFileLog(string.format("Task balloon-fight for %s - Out of limits", actual_pet.remote), "DEBUG") 
-          return		
-        end        
-        WriteConsoleLog(string.format("Task balloon-fight for %s - Done", actual_pet.remote), string.format("🟩 Task balloon-fight for %s - Done!", actual_pet.remote), "DEBUG")
-        WriteFileLog(string.format("Task balloon-fight for %s - Done", actual_pet.remote), "DEBUG")
-        Enstat(age, friendship, money, "balloon_fight")  
-      end)
-      while not _task.completed do
-        task.wait(1)
-      end
-    end
   }
 
   local baby_ailments = {
@@ -2716,7 +2644,7 @@ local _script = coroutine.create(function()
       WriteFileLog("[Registry]: {egg_auto_buy_handler} runned", "DEBUG")
       local money = ClientData.get("money")
       local egg = _G.InternalConfig.AutoBuyDLib.EggAutoBuyDLib.EggToBuy
-      local reserve_money = money - (_G.InternalConfig.AutoBuy.MinimumCashReserve or 0) 
+      local reserve_money = money - (_G.InternalConfig.AutoBuyDLib.MinimumCashReserve or 0) 
       if reserve_money <= 0 then
         __Notify("Warning", "[Egg AutoBuy]: Minimal value of cash reached. Can't buy more eggs. Timeout [300]s.", NotifyDuration["WARNING"])
         Cooldown.AutoFarm.TryBuyEggAfter = 300
@@ -2774,7 +2702,7 @@ local _script = coroutine.create(function()
       WriteFileLog("[Registry]: {gift_auto_buy_handler} runned", "DEBUG")
       local money = ClientData.get("money")
       local gift = _G.InternalConfig.AutoBuyDLib.GiftAutoBuyDLib.EggToBuy
-      local reserve_money = money - (_G.InternalConfig.AutoBuy.MinimumCashReserve or 0)
+      local reserve_money = money - (_G.InternalConfig.AutoBuyDLib.MinimumCashReserve or 0)
       if reserve_money <= 0 then
         __Notify("Warning", "[Gift AutoBuy]: Minimal value of cash reached. Can't buy more gifts. Timeout [300]s.", NotifyDuration["WARNING"])
         Cooldown.AutoFarm.TryBuyGiftAfter = 300
@@ -3468,8 +3396,51 @@ else
     end
     return n
   end
+  _G.ConfigFilter = {
+    ["SpecificGiftFilter"] = {
+      ["chests"] = true,
+      ["massivegift"] = true,
+      ["biggift"] = true,
+      ["smallgift"] = true,
+    },
+    ["RaritiesFilter"] = {
+      ["common"] = "common",
+      ["uncommon"] = "uncommon",
+      ["rare"] = "rare",
+      ["ultra-rare"] = "ultra_rare",
+      ["legendary"] = "legendary",
+    },
+    ["AgesFilter"] = {
+      ["newborn"] = 1,
+      ["junior"] = 2,
+      ["pre-teen"] = 3,
+      ["teen"] = 4,
+      ["post-teen"] = 5,
+      ["fullgrown"] = 6,
+    },
+    ["PropertiesFilter"] = {
+      ["neon"] = "neon",
+      ["meganeon"] = "meganeon",
+      ["flyable"] = "flyable",
+      ["rideable"] = "rideable",      
+    }
+  }
+  _G.InternalConfig = { 
+    PetFarmDLib = {}, 
+    GiftAutoOpenDLib = {}, 
+    AutoBuyDLib = { EggAutoBuyDLib = {}, GiftAutoBuyDLib = {}, }, 
+    AutoNeonDLib = {}, 
+    AutoMegaNeonDLib = {}, 
+    TradeDLib = { Blacklist = {}, },
+    WebhookDLib = { DiscordDLib = {}, TelegramDLib = {}, },
+    PetRecyclerDLib = { Blacklist = {}, },
+    AutoGivePotionDLib = { Blacklist = {}, }, 
+    PetPenDLib = { Blacklist = {}, }, 
+    OptimizationDLib ={}, 
+    UtilitiesDLib = {}, 
+  } 
   local HttpService = game:GetService("HttpService")
-  local ok, _ = pcall(function() 
+  -- local ok, _ = pcall(function() 
     local Config = _G.Config
     if type(Config.PetFarm.Enabled) == "boolean" then
       if Config.PetFarm.Enabled then
@@ -3614,7 +3585,7 @@ else
         _G.ERR = "Wrong value set to { AutoBuy >> MinimumCashReserve }"
         return
       end
-      _G.InternalConfig.AutoBuy.MinimumCashReserve = Config.AutoBuy.MinimumCashReserve
+      _G.InternalConfig.AutoBuyDLib.MinimumCashReserve = Config.AutoBuy.MinimumCashReserve
     else
       _G.ERR = "Wrong value set to { AutoBuy >> MinimumCashReserve }"
       return
@@ -4134,8 +4105,7 @@ else
       return
     end
     _successed = true
-  end)
-  print("succesed: ", successsed)
+  -- end)
 
   if not _successed and not _G.ERR then
     _G.ERR = "Unexpected error, do not delete anything from config!"   
@@ -4147,7 +4117,6 @@ else
     _G.ERR = nil 
     _G.EXEC -= 1
   else
-    print('before execution')
     coroutine.resume(_script)
   end
 end
