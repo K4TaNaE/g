@@ -261,27 +261,6 @@ local _script = coroutine.create(function()
   local get_ailment_slots = getupvalue(MysteryHelper, 2) 
   local ItemHider = require(ReplicatedStorage.SharedModules.Game.ItemHider)
   local HttpService = game:GetService("HttpService")
-  local response = request({
-    Url = "https://raw.githubusercontent.com/K4TaNaE/arcanic/refs/heads/main/status.json",
-    Method = "GET"
-  })
-  local _ok = false
-  if response.Success then
-    local body = response.Body
-    local data = HttpService:JSONDecode(body)
-    if data.active then
-      _ok = true
-    else
-      LocalPlayer:Kick("The script is outdated. Follow: https://discord.gg/E8BVmZWnHs")
-      error("Outdated.", 0)
-    end
-  end
-    
-  if not _ok then
-    warn("Request failed:", response.StatusCode)
-    LocalPlayer:Kick("Request failed!")
-    error("Request failed!", 0)
-  end
 
   local StateDB = {
     total_fullgrowned = {},
