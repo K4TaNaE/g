@@ -1039,7 +1039,6 @@ local _script = coroutine.create(function()
   end
   
   ;(function()
-    print("there where i must be")
     SafeFire("SettingsAPI/SetSetting", "tutorial_completed", true)
     SafeFire("SettingsAPI/SetSetting", "pet_radial_menu", true)
     SafeFire("SettingsAPI/SetSetting", "use_ailments_monitor", true)
@@ -1073,7 +1072,6 @@ local _script = coroutine.create(function()
     LocalPlayer.Character.Humanoid and 
     LocalPlayer.PlayerGui
     task.wait(1)
-    print("end of where i must be")
   end)()
   
   ;(function() 
@@ -1084,7 +1082,7 @@ local _script = coroutine.create(function()
   end)()
   
   setfpscap(_G.InternalConfig.OptimizationDLib.FPSCap)
-  RunService:Set3dRenderingEnabled(not _G.InternalConfig.OptimizationDLib.Rendering)
+  RunService:Set3dRenderingEnabled(_G.InternalConfig.OptimizationDLib.Rendering)
 
   ;(function()
     local hui = gethui()
@@ -2400,7 +2398,7 @@ local _script = coroutine.create(function()
     task.wait(1)
   end
 
-  if _G.InternalConfig.LureboxFarm.Enabled then
+  if _G.InternalConfig.LureboxFarm then 
     Cooldown.AutoFarm.LureboxFarm = 0
     Registry.RegisterTask("lurebox_farm_handler", function()
       Cooldown.AutoFarm.LureboxFarm = nil
@@ -2505,7 +2503,7 @@ local _script = coroutine.create(function()
     task.wait(1)
   end
 
-  if _G.InternalConfig.BabyFarm.Enabled then
+  if _G.InternalConfig.BabyFarm then
     Cooldown.AutoFarm.BabyAutoFarm = 0
     Registry.RegisterTask("baby_auto_farm_handler", function()
       Cooldown.AutoFarm.BabyAutoFarm = nil
@@ -4084,8 +4082,6 @@ else
     _G.ERR = nil 
     _G.EXEC -= 1
   else
-    print("before script execute")
     coroutine.resume(_script)
   end
 end
-
