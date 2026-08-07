@@ -4041,7 +4041,8 @@ else
   end
 
   if _G.ERR then
-    __Notify("Warning", "Script can't be loaded due to issues in config. Error: " .. _G.ERR, 12)
+    __Notify("Warning", "Script can't be loaded due to issues in config.", 12)
+    __Notify("", "Error: " .. _G.ERR, 12)
     _G.ERR = nil 
     _G.EXEC -= 1
   else
