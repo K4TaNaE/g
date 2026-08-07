@@ -97,7 +97,8 @@ _G.Config = {
         WriteConsoleLogs = false, -- debug
         WriteFileLogs = false, -- debug
     },
-}if not game:IsLoaded() then
+}
+if not game:IsLoaded() then
   game.Loaded:Wait()
 end
 task.wait(1) 
@@ -1071,6 +1072,7 @@ local _script = coroutine.create(function()
   end
   
   ;(function()
+    print("there where i must be")
     SafeFire("SettingsAPI/SetSetting", "tutorial_completed", true)
     SafeFire("SettingsAPI/SetSetting", "pet_radial_menu", true)
     SafeFire("SettingsAPI/SetSetting", "use_ailments_monitor", true)
@@ -1104,6 +1106,7 @@ local _script = coroutine.create(function()
     LocalPlayer.Character.Humanoid and 
     LocalPlayer.PlayerGui
     task.wait(1)
+    print("end of where i must be")
   end)()
   
   ;(function() 
