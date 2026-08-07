@@ -1,3 +1,103 @@
+_G.Config = {
+    PetFarm = {
+        Enabled = true,
+        OppositeFarm = true,
+        Detect2D_Kitty = true,
+        PotionFarm = false,
+        FarmPriority = "pets", -- pets, eggs
+        PetsToExcludeFromFarm = "" -- sep by ";" / names
+    },
+    BabyFarm = true,
+    LureboxFarm = true,
+    AutoClaimDailies = true,
+    GiftAutoOpen = {
+        Enabled = false,
+        SpecificGiftsToOpen = "", -- sep by ";" (optional). chests, massivegift, biggift, smallgift
+    },
+    AutoBuy = {
+        EggAutoBuy = {
+            Enabled = false,        
+            EggToBuy = "",
+            BuyCount = 0, -- -1 for inifinite
+        },
+        GiftAutoBuy = {
+            Enabled = false,
+            GiftToBuy = "",
+            BuyCount = 0, -- -1 for infinite
+        },
+        MinimumCashReserve = 0,
+    },
+    AutoGivePotion = {
+        Enabled = false,
+        SetHigherPriorityFor = "", -- rarities sep by ";" common / uncommon / rare / ultra-rare / legendary
+        Blacklist = {
+            Rarities = "",
+            Ages = "",
+            Properties = "",
+            SpecificPets = "",
+        },
+    },
+    PetPen = {
+        Enabled = false,
+        UsePriority = "any", -- any / pets / eggs
+        PrioritizedRarities = "",
+        Blacklist = { 
+            Rarities = "",
+            Ages = "",
+            Properties = "",
+            SpecificPets = "",
+            ExcludeFriendly = true,
+        },
+    },
+    PetRecycler = {
+        Enabled = false,
+        Blacklist = {
+            Rarities = "",
+            Ages = "",
+            Properties = "",
+            SpecificPets = "",
+        }
+    },
+    AutoTrade = {
+        Enabled = false,
+        PlayerTradeWith = "",
+        TradePriority = "any", -- any / pets / eggs
+        TradeFarmed = true, 
+        TradeDelay = 3600,
+        FallbackDelay = 40,
+        DiscordWebhookLog = true,
+        TelegramWebhookLog = true,
+        Blacklist = { 
+            Rarities = "",
+            Ages = "",
+            Properties = "",
+            SpecificPets = "",
+            ExcludeFriendly = true,
+        },
+    },
+    Webhook = {
+        Discord = {
+            Enabled = false,
+            URL = "",
+            SendDelay = 3600, 
+        },
+        Telegram = {
+            Enabled = false,
+            BotAPIKey = "",
+            ChatID = "",
+            SendDelay = 3600
+        }
+    },
+    Optimization = {
+        FPSCap = 60,
+        Rendering = true,
+    },
+    Utilities = {
+        AutoReconnect = true,
+        WriteConsoleLogs = false, -- debug
+        WriteFileLogs = false, -- debug
+    },
+}
 if not game:IsLoaded() then
   game.Loaded:Wait()
 end
