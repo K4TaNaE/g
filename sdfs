@@ -4037,9 +4037,9 @@ else
   end)
 
   if not _successed and not _G.ERR then
-    _G._ERR = "Unexpected error, do not delete anything from config!"   
+    _G.ERR = "Unexpected error, do not delete anything from config!"   
   end
-  
+
   if _G.ERR then
     __Notify("Warning", "Script can't be loaded due to issues in config. Error: " .. _G.ERR, 12)
     _G.ERR = nil 
