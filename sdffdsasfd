@@ -266,7 +266,14 @@ local _script = coroutine.create(function()
     total_fullgrowned = {},
     starter_value = ClientData.get("money") or 0,
   }
-  local actual_pet = {
+  -- local actual_pet = {
+  --   unique = false,
+  --   remote = false,
+  --   model = false,
+  --   wrapper = false,
+  --   is_egg = false,
+  -- }
+  getgenv().actual_pet = {
     unique = false,
     remote = false,
     model = false,
