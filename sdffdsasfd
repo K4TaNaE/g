@@ -98,7 +98,6 @@ _G.Config = {
         WriteFileLogs = false, -- debug
     },
 }
-
 if not game:IsLoaded() then
   game.Loaded:Wait()
 end
@@ -231,36 +230,6 @@ local _script = coroutine.create(function()
     [4] = "uncommon",
     [5] = "common",
   }
-  _G.ConfigFilter = {
-    ["SpecificGiftFilter"] = {
-      ["chests"] = true,
-      ["massivegift"] = true,
-      ["biggift"] = true,
-      ["smallgift"] = true,
-    },
-    ["RaritiesFilter"] = {
-      ["common"] = "common",
-      ["uncommon"] = "uncommon",
-      ["rare"] = "rare",
-      ["ultra-rare"] = "ultra_rare",
-      ["legendary"] = "legendary",
-    },
-    ["AgesFilter"] = {
-      ["newborn"] = 1,
-      ["junior"] = 2,
-      ["pre-teen"] = 3,
-      ["teen"] = 4,
-      ["post-teen"] = 5,
-      ["fullgrown"] = 6,
-    },
-    ["PropertiesFilter"] = {
-      ["neon"] = "neon",
-      ["meganeon"] = "meganeon",
-      ["flyable"] = "flyable",
-      ["rideable"] = "rideable",      
-    }
-  }
-
   local parts = {
     ["main"] = {0,100,0},
     ["_camp"] = {-25, 30, -1054},
@@ -269,20 +238,7 @@ local _script = coroutine.create(function()
     ["_event_balloon_fight"] = {-61, 37, -1406},
   }  
   local furn = { bed = { ["id"]="basicbed", ["usepart"]="Seat1", }, bath = { ["id"]="cheap_pet_bathtub", ["usepart"]="UseBlock", }, toilet = { ["id"]="ailments_refresh_2024_litter_box", ["usepart"]="UseBlock", }, lurebox = { ["id"]="lures_2023_normal_lure", ["usepart"]="UseBlock", }, } 
-  _G.InternalConfig = { 
-    PetFarmDLib = {}, 
-    GiftAutoOpenDLib = {}, 
-    AutoBuyDLib = { EggAutoBuyDLib = {}, GiftAutoBuyDLib = {}, }, 
-    AutoNeonDLib = {}, 
-    AutoMegaNeonDLib = {}, 
-    TradeDLib = { Blacklist = {}, },
-    WebhookDLib = { DiscordDLib = {}, TelegramDLib = {}, },
-    PetRecyclerDLib = { Blacklist = {}, },
-    AutoGivePotionDLib = { Blacklist = {}, }, 
-    PetPenDLib = { Blacklist = {}, }, 
-    OptimizationDLib ={}, 
-    UtilitiesDLib = {}, 
-  } 
+
   _G.HeadCashed = nil
   local RunService = game:GetService("RunService")
   local NetworkClient = game:GetService("NetworkClient")
@@ -3469,6 +3425,49 @@ else
     end
     return n
   end
+  _G.ConfigFilter = {
+    ["SpecificGiftFilter"] = {
+      ["chests"] = true,
+      ["massivegift"] = true,
+      ["biggift"] = true,
+      ["smallgift"] = true,
+    },
+    ["RaritiesFilter"] = {
+      ["common"] = "common",
+      ["uncommon"] = "uncommon",
+      ["rare"] = "rare",
+      ["ultra-rare"] = "ultra_rare",
+      ["legendary"] = "legendary",
+    },
+    ["AgesFilter"] = {
+      ["newborn"] = 1,
+      ["junior"] = 2,
+      ["pre-teen"] = 3,
+      ["teen"] = 4,
+      ["post-teen"] = 5,
+      ["fullgrown"] = 6,
+    },
+    ["PropertiesFilter"] = {
+      ["neon"] = "neon",
+      ["meganeon"] = "meganeon",
+      ["flyable"] = "flyable",
+      ["rideable"] = "rideable",      
+    }
+  }
+  _G.InternalConfig = { 
+    PetFarmDLib = {}, 
+    GiftAutoOpenDLib = {}, 
+    AutoBuyDLib = { EggAutoBuyDLib = {}, GiftAutoBuyDLib = {}, }, 
+    AutoNeonDLib = {}, 
+    AutoMegaNeonDLib = {}, 
+    TradeDLib = { Blacklist = {}, },
+    WebhookDLib = { DiscordDLib = {}, TelegramDLib = {}, },
+    PetRecyclerDLib = { Blacklist = {}, },
+    AutoGivePotionDLib = { Blacklist = {}, }, 
+    PetPenDLib = { Blacklist = {}, }, 
+    OptimizationDLib ={}, 
+    UtilitiesDLib = {}, 
+  } 
   local HttpService = game:GetService("HttpService")
   -- local ok, _ = pcall(function() 
     local Config = _G.Config
@@ -4150,3 +4149,4 @@ else
     coroutine.resume(_script)
   end
 end
+
