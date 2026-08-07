@@ -3408,7 +3408,8 @@ else
     UtilitiesDLib = {}, 
   } 
   local HttpService = game:GetService("HttpService")
-  -- local ok, _ = pcall(function() 
+  -- local ok, _ = pcall(function()
+  ;(function()  
     local Config = _G.Config
     if type(Config.PetFarm.Enabled) == "boolean" then
       if Config.PetFarm.Enabled then
@@ -3845,8 +3846,8 @@ else
         return
       end
       if type(Config.AutoTrade.FallbackDelay) == "number" then
-        if Config.AutoTrade.FallbackDelay < 60 then
-          _G.ERR = "Value cannot be lower than 60! { AutoTrade >> FallbackDelay }"
+        if Config.AutoTrade.FallbackDelay < 1 then
+          _G.ERR = "Value cannot be lower than 1! { AutoTrade >> FallbackDelay }"
           return
         end
         _G.InternalConfig.TradeDLib.FallbackDelay = Config.AutoTrade.FallbackDelay
@@ -4073,7 +4074,7 @@ else
       return
     end
     _successed = true
-  -- end)
+  end)()
     print(_successed .. " - | is_successed")
   if not _successed and not _G.ERR then
     _G.ERR = "Unexpected error, do not delete anything from config!"   
