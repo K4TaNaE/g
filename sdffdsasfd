@@ -527,9 +527,6 @@ local _script = coroutine.create(function()
     end
     LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(part.Position + Vector3.new(0, 5, 0))
   end
-  local function GetCurrentLocation()
-    return InteriorsM.get_current_location()["destination_id"]
-  end 	
   local function EmulateLocation(dest, house_owner, subdest)	
     SafeFire("LocationAPI/SetLocation", dest, house_owner or LocalPlayer, subdest)
   end
@@ -706,15 +703,6 @@ local _script = coroutine.create(function()
     local remote = ClientData.get("inventory")[category][unique].id or "jajki gabriela minakowskiego"
     return InventoryDB[category][remote].name or "Name not found"
   end
-  local function CheckPetOwned(remote)
-    local inv = ClientData.get("inventory")
-    local pets = inv and inv.pets
-    if not pets then return false end
-    if pets[InvGetCategoryUnique("pets", remote)] then
-      return true
-    end
-    return false
-  end   
   local function CountOfProduct(category, remote)
     local inv = ClientData.get("inventory")
     local cat = inv and inv[category]
@@ -4086,17 +4074,19 @@ else
     end
     _successed = true
   -- end)
-
+    print(_successed .. " - | is_successed")
   if not _successed and not _G.ERR then
     _G.ERR = "Unexpected error, do not delete anything from config!"   
   end
 
   if _G.ERR then
+    print("false00")
     __Notify("Warning", "Script can't be loaded due to issues in config.", 12)
     __Notify("", "Error: " .. _G.ERR, 12)
     _G.ERR = nil 
     _G.EXEC -= 1
   else
+    print("before script execute")
     coroutine.resume(_script)
   end
 end
