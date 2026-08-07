@@ -3360,7 +3360,7 @@ if _G.EXEC > 1 then
   __Notify("Warning", "Arcanic is already injected. Relaunch for re-execute.", 6)
 else
   _G.ERR = false
-  local _successed = true
+  local _successed = false
   local function count(t)
     local n = 0
     for _ in pairs(t) do
@@ -3369,7 +3369,7 @@ else
     return n
   end
   local HttpService = game:GetService("HttpService")
-  pcall(function() 
+  local ok, _ = pcall(function() 
     local Config = _G.Config
     if type(Config.PetFarm.Enabled) == "boolean" then
       if Config.PetFarm.Enabled then
@@ -4035,17 +4035,15 @@ else
     end
     _successed = true
   end)
+
   if not _successed and not _G.ERR then
-    _G._ERR = "Unexpected error, do not delete anything from config!" 
+    _G._ERR = "Unexpected error, do not delete anything from config!"   
   end
-end
-
-
-if _G.EXEC == 1 then
+  
   if _G.ERR then
-  __Notify("Warning", "Script can't be loaded due to issues in config. Error: " .. _G.ERR, 12)
-  _G.ERR = false
-  _G.EXEC = 0
+    __Notify("Warning", "Script can't be loaded due to issues in config. Error: " .. _G.ERR, 12)
+    _G.ERR = nil 
+    _G.EXEC -= 1
   else
     coroutine.resume(_script)
   end
