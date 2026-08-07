@@ -149,6 +149,57 @@ local _script = coroutine.create(function()
 
   pcall(function()  
     makefolder("Arcanic")
+    writefile("Arcanic/arcsrcplate.png", game:HttpGet("https://i.imageupload.app/c9bee1997f3764331ed4.png"))if not game:IsLoaded() then
+  game.Loaded:Wait()
+end
+task.wait(1) 
+__VERSION = "1.0.1"
+_G.EXEC = _G.EXEC or 0
+_G.EXEC += 1
+
+type Callback = () -> ()
+local StarterGui = game:GetService("StarterGui")
+
+local function __Notify(title, text, duration)
+  StarterGui:SetCore("SendNotification", {
+    Title = title,
+    Text = text,
+    Duration = duration or 14
+  })
+end
+
+local function IntegrityCheck(func_set :table, on_fallback :Callback, replace :Callback, on_success)
+  for _,v in pairs(func_set) do
+    if v then 
+      pcall(on_success)
+      return v 
+    end
+  end
+  pcall(on_fallback)
+  return replace
+end
+
+print("[+] Starting sUNC integrity check..")
+
+local syn = syn or {}
+local http = http or {}
+local debug = debug or {}
+
+local getupvalue = IntegrityCheck({getupvalue, debug.getupvalue, syn.getupvalue, get_upvalue, debug.get_upvalue, syn.get_upvalue}, function() __Notify("sUNC Integrity Check", "getupvalue function is not supported by executor. Mystery task cannot be completed.") print("[❌] [getupvalue] function failed integrity check.") end, function(...) return end, function() print("[✅] [getupvalue] function successfully completed integrity check.") end)
+local request = IntegrityCheck({request, syn.request, http_request, http.request}, function() __Notify("sUNC Integrity Check", "request function is not supported by executor. Script won't fetch status info from github. Script will not work.") print("[❌] [request] function failed integrity check.") end, function(...) return end, function() print("[✅] [request] function successfully completed integrity check.") end)
+local makefolder = IntegrityCheck({syn.makefolder, makefolder, syn.make_folder, make_folder}, function() __Notify("sUNC Integrity Check", "makefolder function is not supported by executor. Doesn't impact on script proper work.") print("[❌] [makefolder] function failed integrity check.") end, function(...) return end, function() print("[✅] [makefolder] function successfully completed integrity check.") end)
+local writefile = IntegrityCheck({writefile, syn.writefile, syn.write_file, write_file}, function() __Notify("sUNC Integrity Check", "writefile function is not supported by executor. Doesn't impact on script proper work.") print("[❌] [writefile] function failed integrity check.") end, function(...) return end, function() print("[✅] [writefile] function successfully completed integrity check.") end)
+local appendfile = IntegrityCheck({appendfile, append_file, syn.appendfile, syn.append_file}, function() __Notify("sUNC Integrity Check", "appendfile function is not supported by executor. Options: {Write File Logs} won't work.") print("[❌] [appendfile] function failed integrity check.") end, function(...) return end, function() print("[✅] [appendfile] function successfully completed integrity check.") end)
+local getcustomasset = IntegrityCheck({getcustomasset, syn.getcustomasset, get_custom_asset, syn.get_custom_asset}, function() __Notify("sUNC Integrity Check", "getcustomasset function is not supported by executor. Doesn't impact on script proper work.") print("[❌] [getcustomasset] function failed integrity check.") end, function(...) return end, function() print("[✅] [getcustomasset] function successfully completed integrity check.") end)
+local gethui = IntegrityCheck({gethui, get_hui, syn.gethui, syn.get_hui}, function() __Notify("sUNC Integrity Check", "gethui function is not supported by executor. Doesn't impact on script proper work.") print("[❌] [gethui] function failed integrity check, but script has own implementation of function.") end, function(...) return game:GetService("Players").LocalPlayer.PlayerGui end, function() print("[✅] [gethui] function successfully completed integrity check.") end)
+local setfpscap = IntegrityCheck({setfpscap, set_fps_cap, syn.setfpscap, syn.set_fps_cap, set_fpscap, syn.set_fpscap}, function() __Notify("sUNC Integrity Check", "setfpscap function is not supported by executor. Options: {FPS Cap} won't work.") print("[❌] [setfpscap] function failed integrity check.") end, function(...) return end, function() print("[✅] [setfpscap] function successfully completed integrity check.") end)
+local setthreadidentity = IntegrityCheck({setthreadidentity, set_thread_identity, setthreadcontext, set_thread_context, syn.setthreadidentity, syn.setthreadcontext}, function() __Notify("sUNC Integrity Check", "setthreadidentity function is not supported by executor. Script may or may not work depending on your executor.") print("[❌] [setthreadidentity] function failed integrity check.") end, function(...) return end, function() print("[✅] [setthreadidentity] function successfully completed integrity check.") end)
+local queue_on_teleport = IntegrityCheck({queue_onsetthreadidentity_teleport, queueonteleport, syn.queue_on_teleport, syn.queueonteleport}, function() __Notify("sUNC Integrity Check", "queue_on_teleport function is not supported by executor. Option: {Auto Reconnect} will not run script after rejoin, you will be just teleported.") print("[❌] [queue_on_teleport] function failed integrity check, but script has own implementation of function") end, nil, function() print("[✅] [queue_on_teleport] function successfully completed integrity check.") end) -- dla proverok est li funkcija v dalnejsem
+local _script = coroutine.create(function() 
+  setthreadidentity(7)
+
+  pcall(function()  
+    makefolder("Arcanic")
     writefile("Arcanic/arcsrcplate.png", game:HttpGet("https://i.imageupload.app/c9bee1997f3764331ed4.png"))
     _G.asset = getcustomasset("Arcanic/arcsrcplate.png") or ""
   end)
@@ -3408,7 +3459,8 @@ else
     UtilitiesDLib = {}, 
   } 
   local HttpService = game:GetService("HttpService")
-  -- local ok, _ = pcall(function() 
+  -- local ok, _ = pcall(function()
+  ;(function()  
     local Config = _G.Config
     if type(Config.PetFarm.Enabled) == "boolean" then
       if Config.PetFarm.Enabled then
@@ -3845,8 +3897,8 @@ else
         return
       end
       if type(Config.AutoTrade.FallbackDelay) == "number" then
-        if Config.AutoTrade.FallbackDelay < 60 then
-          _G.ERR = "Value cannot be lower than 60! { AutoTrade >> FallbackDelay }"
+        if Config.AutoTrade.FallbackDelay < 1 then
+          _G.ERR = "Value cannot be lower than 1! { AutoTrade >> FallbackDelay }"
           return
         end
         _G.InternalConfig.TradeDLib.FallbackDelay = Config.AutoTrade.FallbackDelay
@@ -4073,8 +4125,7 @@ else
       return
     end
     _successed = true
-  -- end)
-
+  end)()
   if not _successed and not _G.ERR then
     _G.ERR = "Unexpected error, do not delete anything from config!"   
   end
@@ -4089,5 +4140,3 @@ else
     coroutine.resume(_script)
   end
 end
-
-
