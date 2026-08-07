@@ -4035,6 +4035,7 @@ else
     end
     _successed = true
   end)
+  print("succesed: ", successsed)
 
   if not _successed and not _G.ERR then
     _G.ERR = "Unexpected error, do not delete anything from config!"   
@@ -4046,6 +4047,7 @@ else
     _G.ERR = nil 
     _G.EXEC -= 1
   else
+    print('before execution')
     coroutine.resume(_script)
   end
 end
