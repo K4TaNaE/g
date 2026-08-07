@@ -13,16 +13,16 @@ _G.Config = {
     GiftAutoOpen = {
         Enabled = false,
         SpecificGiftsToOpen = "", -- sep by ";" (optional). chests, massivegift, biggift, smallgift
-    },
+    },  
     AutoBuy = {
         EggAutoBuy = {
             Enabled = false,        
-            EggToBuy = "",
-            BuyCount = 0, -- -1 for inifinite
+            EggToBuy = "endangered_egg", 
+            BuyCount = 3, -- -1 for inifinite
         },
         GiftAutoBuy = {
             Enabled = false,
-            GiftToBuy = "",
+            GiftToBuy = "", 
             BuyCount = 0, -- -1 for infinite
         },
         MinimumCashReserve = 0,
@@ -266,14 +266,7 @@ local _script = coroutine.create(function()
     total_fullgrowned = {},
     starter_value = ClientData.get("money") or 0,
   }
-  -- local actual_pet = {
-  --   unique = false,
-  --   remote = false,
-  --   model = false,
-  --   wrapper = false,
-  --   is_egg = false,
-  -- }
-  getgenv().actual_pet = {
+  local actual_pet = {
     unique = false,
     remote = false,
     model = false,
@@ -516,6 +509,17 @@ local _script = coroutine.create(function()
   local function Equiped() 
     return ClientData.get("pet_char_wrappers")[1]
   end
+  local function GetEquipedModel() 
+    local model
+    for _, v in ipairs(workspace.Pets:GetChildren()) do
+      local entity = PetEntityManager.get_pet_entity(v)
+      if entity and entity.session_memory and entity.session_memory.meta.owned_by_local_player then
+        model = v
+        break
+      end
+    end
+    return model
+  end
   local function Gotopart(name) 
     local part = game.Workspace:FindFirstChild(name)
     if not part then
@@ -527,26 +531,13 @@ local _script = coroutine.create(function()
       PetActions.pick_up(actual_pet.wrapper)
       LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(part.Position + Vector3.new(0, 5, 0))
       task.wait(0.3)
-      if actual_pet.model then
-        SafeFire("AdoptAPI/EjectBaby", actual_pet.model)
-      end
+      SafeFire("AdoptAPI/EjectBaby", GetEquipedModel())
       return true
     end
     LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(part.Position + Vector3.new(0, 5, 0))
   end
   local function EmulateLocation(dest, house_owner, subdest)	
     SafeFire("LocationAPI/SetLocation", dest, house_owner or LocalPlayer, subdest)
-  end
-  local function GetEquipedModel() 
-    local model
-    for _, v in ipairs(workspace.Pets:GetChildren()) do
-      local entity = PetEntityManager.get_pet_entity(v)
-      if entity and entity.session_memory and entity.session_memory.meta.owned_by_local_player then
-        model = v
-        break
-      end
-    end
-    return model
   end
   local function CurUnique()
     local w = ClientData.get("pet_char_wrappers")[1]
@@ -1039,7 +1030,6 @@ local _script = coroutine.create(function()
     local name = pet_info and pet_info.name
     actual_pet.unique = unique 
     actual_pet.remote = remote
-    actual_pet.model = workspace.Pets:FindFirstChild(name) or GetEquipedModel()
     actual_pet.wrapper = wrapper
     actual_pet.is_egg = (name:lower()):match("egg") ~= nil
     actual_pet.name = name
@@ -1633,10 +1623,11 @@ local _script = coroutine.create(function()
       local friendship = cdata.properties.friendship_level
       local money = ClientData.get("money")
       local age = pet.pet_progression.age
+      local model = GetEquipedModel()
       local deadline = os.clock() + 60
       Gotopart("main")
       task.wait(.25)
-      SafeFire("AdoptAPI/HoldBaby", actual_pet.model)
+      SafeFire("AdoptAPI/HoldBaby", model)
       local hrp = LocalPlayer.Character.HumanoidRootPart
       local lockedpos = hrp.Position
       _G.CONNECTIONS.WalkLock = RunService.RenderStepped:Connect(function()
@@ -1648,7 +1639,7 @@ local _script = coroutine.create(function()
       end
       _G.CONNECTIONS.WalkLock:Disconnect()
       _G.CONNECTIONS.WalkLock = nil
-      SafeFire("AdoptAPI/EjectBaby", actual_pet.model)
+      SafeFire("AdoptAPI/EjectBaby", model)
       if os.clock() > deadline then 
         WriteConsoleLog(string.format("Task walk for %s - Out of limits", actual_pet.remote), string.format("🟥 Task walk for %s - Out of limits!", actual_pet.remote), "DEBUG")
         WriteFileLog(string.format("Task walk for %s - Out of limits", actual_pet.remote), "DEBUG") 
